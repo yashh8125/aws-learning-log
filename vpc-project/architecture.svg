@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="DejaVu Sans, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#232F3E"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="940" fill="#ffffff"/>
+  <text x="700" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#232F3E">Hand-built AWS VPC: public subnet, NAT gateway and bastion</text>
+
+  <!-- You and Internet -->
+  <rect x="120" y="62" width="160" height="48" rx="6" fill="#f2f3f3" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="200" y="92" text-anchor="middle" font-size="15" fill="#232F3E">You (laptop)</text>
+  <ellipse cx="700" cy="86" rx="120" ry="36" fill="#f2f3f3" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="700" y="92" text-anchor="middle" font-size="16" font-weight="bold" fill="#232F3E">Internet</text>
+  <line x1="280" y1="86" x2="578" y2="86" stroke="#232F3E" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="700" y1="122" x2="700" y2="172" stroke="#232F3E" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+
+  <!-- AWS cloud and VPC -->
+  <rect x="40" y="150" width="1320" height="690" fill="none" stroke="#232F3E" stroke-width="2"/>
+  <text x="60" y="176" font-size="15" font-weight="bold" fill="#232F3E">AWS Cloud · Region ap-south-1 (Mumbai)</text>
+  <rect x="70" y="200" width="1260" height="620" fill="#faf7ff" stroke="#8C4FFF" stroke-width="2.5"/>
+  <text x="90" y="224" font-size="15" font-weight="bold" fill="#8C4FFF">VPC learning-vpc · 10.0.0.0/16</text>
+
+  <!-- AZ boxes -->
+  <rect x="100" y="250" width="580" height="540" fill="none" stroke="#7d8998" stroke-width="1.5" stroke-dasharray="8,5"/>
+  <text x="660" y="275" text-anchor="end" font-size="14" fill="#545b64">Availability Zone ap-south-1a</text>
+  <rect x="720" y="250" width="580" height="540" fill="none" stroke="#7d8998" stroke-width="1.5" stroke-dasharray="8,5"/>
+  <text x="740" y="275" font-size="14" fill="#545b64">Availability Zone ap-south-1b</text>
+
+  <!-- Public subnets -->
+  <rect x="120" y="290" width="540" height="230" fill="#e9f5e1" stroke="#3F8624" stroke-width="2"/>
+  <text x="136" y="314" font-size="14" font-weight="bold" fill="#3F8624">public-subnet-1a · 10.0.1.0/24</text>
+  <rect x="740" y="290" width="540" height="230" fill="#e9f5e1" stroke="#3F8624" stroke-width="2"/>
+  <text x="756" y="314" font-size="14" font-weight="bold" fill="#3F8624">public-subnet-1b · 10.0.2.0/24</text>
+  <text x="1010" y="410" text-anchor="middle" font-size="13" fill="#7d8998">(no resources, same public-rt)</text>
+
+  <!-- Private subnets -->
+  <rect x="120" y="560" width="540" height="210" fill="#e6f0fa" stroke="#147EBA" stroke-width="2"/>
+  <text x="136" y="584" font-size="14" font-weight="bold" fill="#147EBA">private-subnet-1a · 10.0.11.0/24</text>
+  <rect x="740" y="560" width="540" height="210" fill="#e6f0fa" stroke="#147EBA" stroke-width="2"/>
+  <text x="756" y="584" font-size="14" font-weight="bold" fill="#147EBA">private-subnet-1b · 10.0.12.0/24</text>
+  <text x="1010" y="670" text-anchor="middle" font-size="13" fill="#7d8998">(no resources, same private-rt)</text>
+
+  <!-- Route table notes -->
+  <text x="250" y="500" font-size="13" font-style="italic" fill="#232F3E">public-rt: 0.0.0.0/0 → IGW</text>
+  <text x="250" y="756" font-size="13" font-style="italic" fill="#232F3E">private-rt: 0.0.0.0/0 → NAT</text>
+
+  <!-- Resources -->
+  <rect x="150" y="350" width="160" height="80" rx="6" fill="#ED7100"/>
+  <text x="230" y="386" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">EC2 · bastion</text>
+  <text x="230" y="408" text-anchor="middle" font-size="12" fill="#fff">t3.micro · public IP</text>
+
+  <rect x="480" y="350" width="160" height="80" rx="6" fill="#8C4FFF"/>
+  <text x="560" y="386" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">NAT gateway</text>
+  <text x="560" y="408" text-anchor="middle" font-size="12" fill="#fff">learning-nat · Elastic IP</text>
+
+  <rect x="300" y="630" width="180" height="80" rx="6" fill="#ED7100"/>
+  <text x="390" y="666" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">EC2 · private-app-1</text>
+  <text x="390" y="688" text-anchor="middle" font-size="12" fill="#fff">t3.micro · no public IP</text>
+
+  <rect x="620" y="174" width="160" height="52" rx="6" fill="#8C4FFF"/>
+  <text x="700" y="197" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Internet gateway</text>
+  <text x="700" y="215" text-anchor="middle" font-size="12" fill="#fff">learning-igw</text>
+
+  <!-- Flow 1: laptop -> internet -> IGW -> bastion -->
+  <polyline points="650,226 650,240 230,240 230,348" fill="none" stroke="#232F3E" stroke-width="2" marker-end="url(#a)"/>
+  <text x="400" y="234" font-size="13" font-weight="bold" fill="#232F3E">(1) SSH (22), source = My IP</text>
+
+  <!-- Flow 2: bastion -> private (agent forwarding) -->
+  <polyline points="230,430 230,670 298,670" fill="none" stroke="#232F3E" stroke-width="2" marker-end="url(#a)"/>
+  <text x="244" y="545" font-size="13" font-weight="bold" fill="#232F3E">(2) SSH via agent forwarding (-A)</text>
+
+  <!-- Flow 3: private -> NAT -->
+  <polyline points="480,670 560,670 560,432" fill="none" stroke="#232F3E" stroke-width="2" marker-end="url(#a)"/>
+  <text x="548" y="620" text-anchor="end" font-size="13" font-weight="bold" fill="#232F3E">(3) outbound</text>
+
+  <!-- Flow 4: NAT -> IGW -> internet -->
+  <polyline points="640,390 700,390 700,228" fill="none" stroke="#232F3E" stroke-width="2" marker-end="url(#a)"/>
+  <circle cx="700" cy="330" r="12" fill="#fff" stroke="#232F3E" stroke-width="1.5"/>
+  <text x="700" y="335" text-anchor="middle" font-size="13" font-weight="bold" fill="#232F3E">4</text>
+
+  <!-- Legend -->
+  <rect x="300" y="868" width="18" height="18" fill="#e9f5e1" stroke="#3F8624" stroke-width="2"/>
+  <text x="326" y="882" font-size="13" fill="#232F3E">Public subnet</text>
+  <rect x="460" y="868" width="18" height="18" fill="#e6f0fa" stroke="#147EBA" stroke-width="2"/>
+  <text x="486" y="882" font-size="13" fill="#232F3E">Private subnet</text>
+  <rect x="630" y="868" width="18" height="18" fill="#ED7100"/>
+  <text x="656" y="882" font-size="13" fill="#232F3E">EC2 instance</text>
+  <rect x="790" y="868" width="18" height="18" fill="#8C4FFF"/>
+  <text x="816" y="882" font-size="13" fill="#232F3E">Gateway</text>
+  <text x="700" y="918" text-anchor="middle" font-size="12" fill="#545b64">(4) = NAT → IGW → Internet. NAT, bastion and private-app-1 were deleted after the lab to stop billing.</text>
+</svg>
